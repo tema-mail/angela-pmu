@@ -24,7 +24,7 @@ import logo from '../assets/logo-big.png';
       <div>
         <p class="ct__label">Соц. сети</p>
         <div class="ct__icons">
-          <a class="icon-btn" href={contacts.telegram} target="_blank" rel="noopener" aria-label="Telegram"><img src={u('/img/ic-tg-foot.svg')} alt="" width="17.6" height="28.6" /></a>
+          <a class="icon-btn icon-tg icon-tg--lg" href={contacts.telegram} target="_blank" rel="noopener" aria-label="Telegram"><img src={u('/img/ic-tg-foot.svg')} alt="" width="17.6" height="28.6" /></a>
           <a class="icon-btn" href={contacts.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp"><img src={u('/img/ic-wa-foot.svg')} alt="" width="17.2" height="19.1" /></a>
         </div>
       </div>
@@ -62,7 +62,7 @@ import logo from '../assets/logo-big.png';
   .ct :global(.ct__cta) { margin-top: auto; }
 
   .ft { display: grid; grid-template-columns: 335px 335px 1fr auto; align-items: end; margin-top: 64px; padding-bottom: 37px; color: var(--gray); font-size: 18px; }
-  .ft__logo { width: 233px; height: 218px; object-fit: fill; }
+  .ft__logo { width: 233px; height: auto; }
   .ft__req { align-self: end; padding-bottom: 48px; line-height: 1.22; }
   .ft__docs { display: flex; flex-direction: column; gap: 11px; padding-bottom: 46px; }
   .ft__docs .ct__label { margin-bottom: 15px; }
@@ -83,7 +83,7 @@ import logo from '../assets/logo-big.png';
     .ct__icons { margin-top: 8px; }
     .ct :global(.ct__cta) { margin-top: 28px; }
     .ft { grid-template-columns: 1fr; gap: 24px; margin-top: 48px; padding-bottom: 28px; font-size: 16px; }
-    .ft__logo { width: 160px; height: 150px; }
+    .ft__logo { width: 160px; }
     .ft__docs .ct__label { margin-bottom: 4px; }
   }
   @media (max-width: 420px) {

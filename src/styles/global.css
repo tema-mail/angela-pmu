@@ -55,6 +55,9 @@ p, h1, h2, h3 { margin: 0; font-weight: 400; }
 /* круглая кнопка-иконка (мессенджеры) */
 .icon-btn { display: inline-grid; place-items: center; width: 46px; height: 46px; border: 1px solid var(--gray); border-radius: 50%; transition: background .2s; }
 .icon-btn:hover { background: var(--cream); }
+/* у SVG Telegram из макета нижняя половина пустая – сдвигаем знак в центр круга */
+.icon-tg img { transform: translate(-1px, 5.6px); }
+.icon-tg--lg img { transform: translate(-1px, 6.6px); }
 
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 

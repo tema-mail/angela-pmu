@@ -48,7 +48,7 @@ export default function MobileMenu(p: Props) {
           <a class="mmenu__phone" href={p.phoneHref}>{p.phone}</a>
           <div class="mmenu__hours">{p.hours}</div>
           <div class="mmenu__icons">
-            <a class="icon-btn" href={p.telegram} target="_blank" rel="noopener" aria-label="Telegram"><img src={p.tgIcon} alt="" width="15" height="24" /></a>
+            <a class="icon-btn icon-tg" href={p.telegram} target="_blank" rel="noopener" aria-label="Telegram"><img src={p.tgIcon} alt="" width="15" height="24" /></a>
             <a class="icon-btn" href={p.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp"><img src={p.waIcon} alt="" width="15" height="16" /></a>
           </div>
           <a class="cta mmenu__cta" href={p.bookHref} target="_blank" rel="noopener" onClick={close}>
