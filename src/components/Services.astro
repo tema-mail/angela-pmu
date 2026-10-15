@@ -1,0 +1,76 @@
+---
+import { Image } from 'astro:assets';
+import { u } from '../lib/url';
+import botox from '../assets/s-botox.png';
+import lips from '../assets/lips1.png';
+import keratin from '../assets/s-keratin.png';
+import brows from '../assets/s-brows.png';
+import micro from '../assets/s-micro.png';
+import lamin from '../assets/s-lamin.png';
+import lash from '../assets/s-lash.png';
+
+// Сетка макета: 4 колонки, «Кератиновое выпрямление» – на две строки. pos – кадрирование фото как в макете.
+const items = [
+  { title: 'Горячий ботокс', img: botox, pos: '50% 0%', w: 207 },
+  { title: 'Акварельные губы', img: lips, pos: '50% 18.8%', w: 172 },
+  { title: 'Кератиновое выпрямление', img: keratin, pos: '50% 50%', w: 172, tall: true },
+  { title: 'Напыление бровей', img: brows, pos: '50% 50%', w: 172 },
+  { title: 'Микроблейдинг', img: micro, pos: '50% 50%', w: 217 },
+  { title: 'Ламинирование и окрашивание', img: lamin, pos: '50% 50%', w: 226 },
+  { title: 'Напыление межресничного пространства', img: lash, pos: '50% 50%', w: 239 },
+];
+---
+<section class="wrap section" id="services">
+  <p class="eyebrow">Услуги</p>
+  <h2 class="h2 svc__h">Услуги для вашей естественной красоты</h2>
+  <p class="lead svc__lead">От деликатного перманентного макияжа до ухода за кожей и бровями. Подберём процедуру с учётом ваших пожеланий и особенностей внешности.</p>
+
+  <div class="svc">
+    {items.map((s) => (
+      <a class:list={['svc__card', { 'svc__card--tall': s.tall }]} href="#portfolio" data-filter={s.title}>
+        <Image class="svc__img" src={s.img} alt={s.title} widths={[320, 480, 640]} sizes="(max-width: 1099px) 50vw, 320px" style={`object-position:${s.pos}`} />
+        <span class="svc__title" style={`--tw:${s.w}px`}>{s.title}</span>
+        <span class="svc__more">
+          <span class="svc__pill">Подробнее</span>
+          <img class="svc__arrow" src={u('/img/card-arrow.svg')} alt="" width="39" height="39" />
+        </span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<script>
+  // «Подробнее» ведёт к портфолио с фильтром по этой услуге (фильтр слушает событие).
+  document.querySelectorAll<HTMLElement>('.svc__card').forEach((el) =>
+    el.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('portfolio:filter', { detail: el.dataset.filter }));
+    }),
+  );
+</script>
+
+<style>
+  .svc__h { max-width: 612px; }
+  .svc__lead { max-width: 612px; }
+  .svc { margin-top: clamp(28px, 3vw, 40px); display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 309px; gap: var(--gap); grid-auto-flow: dense; }
+  .svc__card { position: relative; display: block; overflow: hidden; border-radius: var(--radius); background: #ccc; isolation: isolate; }
+  .svc__card--tall { grid-row: span 2; }
+  .svc__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .5s ease; }
+  .svc__card::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(0,0,0,.7) 0%, rgba(102,102,102,0) 60.5%); }
+  .svc__card:hover .svc__img { transform: scale(1.04); }
+  .svc__title { position: absolute; left: 20.88px; top: 20.68px; right: 20px; max-width: var(--tw); font-size: 30px; line-height: 0.8; color: var(--white); }
+  .svc__more { position: absolute; left: 20.88px; bottom: 20px; display: flex; align-items: center; }
+  .svc__pill { display: grid; place-items: center; width: 135px; height: 39px; border-radius: 54px; background: var(--white); color: var(--gray); font-size: 18px; line-height: 1; }
+  .svc__arrow { transition: transform .25s; }
+  .svc__card:hover .svc__arrow { transform: translateX(3px); }
+
+  @media (max-width: 1099px) {
+    .svc { grid-template-columns: repeat(2, 1fr); grid-auto-rows: clamp(220px, 42vw, 340px); gap: 12px; }
+  }
+  @media (max-width: 599px) {
+    .svc { gap: 8px; grid-auto-rows: 58vw; }
+    .svc__title { left: 12px; top: 13px; right: 10px; max-width: none; font-size: clamp(17px, 5vw, 22px); line-height: 0.9; }
+    .svc__more { left: 10px; bottom: 10px; }
+    .svc__pill { width: auto; height: 32px; padding: 0 12px; font-size: 14px; }
+    .svc__arrow { width: 32px; height: 32px; }
+  }
+</style>

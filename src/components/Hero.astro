@@ -1,0 +1,131 @@
+---
+import { Image } from 'astro:assets';
+import { u } from '../lib/url';
+import Cta from './Cta.astro';
+import bg from '../assets/hero-bg.png';
+import model from '../assets/hero-model.png';
+
+const features = [
+  { icon: 'ic-brush.svg', w: 53.93, h: 53.93, text: 'Более 10 000 процедур' },
+  { icon: 'ic-brow.svg', w: 49.65, h: 49.65, text: 'Естественный результат' },
+  { icon: 'ic-lip.svg', w: 40.7, h: 44.85, text: 'Премиальные материалы' },
+  { icon: 'ic-time.svg', w: 40.33, h: 40.33, text: 'Процедура около часа' },
+];
+---
+<section class="wrap hero-wrap" id="top">
+  <div class="hero">
+    <Image class="hero__bg" src={bg} alt="" widths={[640, 1000, 1400, 1672]} sizes="(max-width: 1440px) 100vw, 1320px" loading="eager" fetchpriority="high" />
+    <div class="hero__card">
+      <p class="hero__sub">Красота, которая остаётся с вами надолго</p>
+      <h1 class="hero__title">
+        <span class="hero__t1">Перманентный макияж</span>
+        <span class="hero__t2">и микроблейдинг</span>
+      </h1>
+      <p class="hero__desc">Ваш идеальный образ без усилий: качественный перманентный макияж и художественный микроблейдинг.</p>
+      <Cta class="hero__cta" />
+    </div>
+    <div class="hero__person">
+      <Image class="hero__model" src={model} alt="Анжела Богатырёва, мастер перманентного макияжа" widths={[400, 700, 1024]} sizes="(max-width: 899px) 90vw, 50vw" loading="eager" />
+      <div class="hero__name">
+        <p class="hero__fio">Анжела<br />Богатырёва</p>
+        <p class="hero__role">Топ мастер перманентного макияжа и микроблейдинга</p>
+      </div>
+      <a class="hero__video" href="#portfolio" aria-label="Видео работы">
+        <span class="hero__play"><img src={u('/img/play.svg')} alt="" width="24" height="22" /></span>
+        <span class="hero__vtext">Видео работы</span>
+      </a>
+    </div>
+  </div>
+
+  <ul class="feats">
+    {features.map((f) => (
+      <li class="feat">
+        <span class="feat__ic"><img src={u('/img/' + f.icon)} alt="" width={f.w} height={f.h} /></span>
+        <span class="feat__t">{f.text}</span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .hero-wrap { margin-top: 10px; }
+  .hero { position: relative; container-type: inline-size; border-radius: var(--radius); overflow: hidden; background: #e9d9cb; }
+  .hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero__sub { color: var(--brown); }
+  .hero__title { display: block; }
+  .hero__t1 { display: block; font-family: Unbounded, var(--font); font-weight: 500; text-transform: uppercase; line-height: 1.24; letter-spacing: -0.02em; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero__t2 { display: block; color: var(--brown); line-height: 1.2; }
+  .hero__desc { color: var(--gray); line-height: 1.22; }
+  .hero__fio { font-weight: 600; line-height: 0.844; text-align: right; background: linear-gradient(234.8deg, #deb497 10.5%, #986d53 60.8%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero__role { color: var(--gray); text-align: right; line-height: 1.2; }
+  .hero__video { position: absolute; display: block; border-radius: 40px; background: linear-gradient(-79.7deg, #deb497 24%, #986d53 115%); color: var(--white); text-align: center; transition: transform .2s; }
+  .hero__video:hover { transform: translateY(-2px); }
+  .hero__play { position: absolute; display: grid; place-items: center; border-radius: 50%; background: var(--cream); }
+  .hero__play img { transform: rotate(90deg); }
+  .hero__vtext { position: absolute; left: 0; right: 0; line-height: 0.78; }
+
+  /* Десктоп: координаты макета 1320×637 в единицах ширины контейнера (1cqw = 13.2px) */
+  @media (min-width: 900px) {
+    .hero { aspect-ratio: 1320 / 637; }
+    .hero__card { position: absolute; left: 2.277cqw; top: 2.317cqw; width: 48.48cqw; height: 43.67cqw; padding: 5.25cqw 0 0 3.28cqw; border-radius: var(--radius); background: var(--cream); }
+    .hero__sub { font-size: 1.81cqw; }
+    .hero__title { margin-top: 0.55cqw; }
+    .hero__t1 { font-size: 3.973cqw; width: 43.38cqw; }
+    .hero__t2 { font-size: 4.178cqw; margin-top: -0.05cqw; }
+    .hero__desc { font-size: 1.364cqw; width: 34.95cqw; margin-top: 1.95cqw; }
+    .hero :global(.hero__cta) { position: absolute; left: 3.28cqw; top: 32.75cqw; width: 29.37cqw; height: 5.346cqw; padding-left: 2.03cqw; font-size: 1.495cqw; }
+    .hero :global(.hero__cta .cta__dot) { width: 3.887cqw; height: 3.887cqw; margin-top: -1.9435cqw; right: 0.727cqw; }
+    .hero :global(.hero__cta .cta__dot img) { width: 2.5cqw; height: auto; }
+    .hero__person { position: absolute; inset: 0; pointer-events: none; }
+    .hero__person > * { pointer-events: auto; }
+    .hero__model { position: absolute; left: 34.24cqw; top: 1.092cqw; width: 49.12cqw; height: auto; aspect-ratio: 1024 / 1536; }
+    .hero__name { position: absolute; right: 27.63cqw; top: 29.68cqw; }
+    .hero__fio { font-size: 2.476cqw; }
+    .hero__role { font-size: 1.06cqw; width: 14.32cqw; margin-top: 0.6cqw; margin-left: auto; }
+    .hero__video { left: 73.43cqw; top: 29.98cqw; width: 4.853cqw; height: 7.955cqw; }
+    .hero__play { left: 0.483cqw; top: 0.431cqw; width: 3.887cqw; height: 3.887cqw; }
+    .hero__play img { width: 1.8cqw; height: auto; }
+    .hero__vtext { top: 4.77cqw; font-size: 1.06cqw; }
+  }
+
+  /* Телефон и планшет: карточка сверху, фото мастера снизу */
+  @media (max-width: 899px) {
+    .hero { padding: 12px; }
+    .hero__card { position: relative; z-index: 1; padding: 26px 16px 18px; border-radius: 16px; background: var(--cream); }
+    .hero__sub { font-size: clamp(16px, 3.8vw, 22px); }
+    .hero__title { margin-top: 10px; }
+    .hero__t1 { font-size: clamp(21px, 6.3vw, 50px); }
+    .hero__t2 { font-size: clamp(28px, 8vw, 54px); margin-top: 2px; }
+    .hero__desc { font-size: 15px; margin-top: 14px; max-width: 460px; }
+    .hero :global(.hero__cta) { margin-top: 22px; }
+    .hero__person { position: relative; height: clamp(380px, 112vw, 640px); margin: -40px -12px -12px; overflow: hidden; }
+    .hero__model { position: absolute; left: 50%; top: 18px; width: min(118vw, 700px); max-width: none; height: auto; transform: translateX(-38%); }
+    .hero__person::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 42%; background: linear-gradient(180deg, rgba(250,242,235,0), rgba(250,242,235,.92) 70%); }
+    .hero__name, .hero__video { z-index: 1; }
+    .hero__name { position: absolute; right: 92px; bottom: 34px; }
+    .hero__fio { font-size: clamp(24px, 6.4vw, 34px); }
+    .hero__role { font-size: 13px; width: 170px; margin: 6px 0 0 auto; color: #7d7c77; }
+    .hero__video { right: 20px; bottom: 26px; width: 60px; height: 98px; }
+    .hero__play { left: 5px; top: 5px; width: 50px; height: 50px; }
+    .hero__play img { width: 22px; }
+    .hero__vtext { top: 62px; font-size: 13px; }
+  }
+
+  .feats { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); }
+  .feat { display: flex; align-items: center; gap: 0; min-height: 86.58px; padding: 0 16px 0 20px; border-radius: var(--radius); background: var(--cream); }
+  .feat__ic { flex: 0 0 90px; display: flex; align-items: center; }
+  .feat__t { font-size: 24px; line-height: 1.02; color: var(--brown); max-width: 175px; }
+  @media (max-width: 1239px) {
+    .feat__ic { flex-basis: 70px; }
+    .feat__t { font-size: 20px; }
+  }
+  @media (max-width: 1099px) {
+    .feats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  }
+  @media (max-width: 599px) {
+    .feat { min-height: 76px; padding: 12px; gap: 10px; }
+    .feat__ic { flex: 0 0 34px; }
+    .feat__ic img { width: 34px; height: auto; }
+    .feat__t { font-size: 16px; }
+  }
+</style>

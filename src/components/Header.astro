@@ -1,0 +1,84 @@
+---
+import { Image } from 'astro:assets';
+import { u } from '../lib/url';
+import { nav, contacts, bookHref } from '../data/site';
+import MobileMenu from './MobileMenu';
+import logo from '../assets/logo-small.png';
+---
+<header class="hdr">
+  <div class="wrap">
+    <div class="hdr__bar">
+      <nav class="hdr__nav" aria-label="Разделы">
+        {nav.map((i) => <a href={i.href}>{i.label}</a>)}
+      </nav>
+      <a class="hdr__logo" href="#top" aria-label="Анжела Богатырёва – на главную">
+        <Image src={logo} alt="" widths={[100, 200]} sizes="100px" width={100} height={100} loading="eager" />
+      </a>
+      <div class="hdr__right">
+        <a class="hdr__phone" href={contacts.headerPhoneHref}>
+          <span>{contacts.headerPhone}</span>
+          <small>{contacts.hours}</small>
+        </a>
+        <a class="icon-btn" href={contacts.telegram} target="_blank" rel="noopener" aria-label="Telegram"><img src={u('/img/ic-tg-head.svg')} alt="" width="15" height="24" /></a>
+        <a class="icon-btn" href={contacts.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp"><img src={u('/img/ic-wa-head.svg')} alt="" width="15" height="16" /></a>
+        <a class="hdr__order" href={bookHref} target="_blank" rel="noopener">Заказать</a>
+        <MobileMenu
+          client:media="(max-width: 1099px)"
+          nav={nav}
+          phone={contacts.phone}
+          phoneHref={contacts.phoneHref}
+          hours={contacts.hours}
+          bookHref={bookHref}
+          telegram={contacts.telegram}
+          whatsapp={contacts.whatsapp}
+          tgIcon={u('/img/ic-tg-head.svg')}
+          waIcon={u('/img/ic-wa-head.svg')}
+          arrowIcon={u('/img/arrow-right.svg')}
+        />
+      </div>
+    </div>
+  </div>
+</header>
+
+<style is:global>
+  .hdr { position: sticky; top: 0; z-index: 50; padding-top: 0; }
+  .hdr__bar { position: relative; display: flex; align-items: center; justify-content: space-between; height: var(--header-h); padding: 0 15px 0 40px; border-radius: 61px; background: var(--cream-2); }
+  .hdr__nav { display: flex; gap: 27px; font-size: 14px; color: var(--gray); }
+  .hdr__nav a:hover { color: var(--brown); }
+  .hdr__logo { position: absolute; z-index: 2; left: 50%; top: -4px; width: 100px; height: 76px; transform: translateX(-50%); }
+  .hdr__logo img { width: 100%; height: 100%; object-fit: fill; }
+  .hdr__right { display: flex; align-items: center; gap: 5px; margin-left: auto; }
+  .hdr__phone { display: flex; flex-direction: column; gap: 6px; margin-right: 34px; font-family: Inter, var(--font); font-size: 14px; color: var(--gray); letter-spacing: -0.02em; }
+  .hdr__phone small { font-size: 12px; color: var(--gray-2); }
+  .hdr__order { display: grid; place-items: center; width: 100px; height: 46px; margin-left: 3px; border: 1px solid var(--gray); border-radius: 44px; font-family: Inter, var(--font); font-size: 14px; color: #a4a39d; transition: background .2s, color .2s; }
+  .hdr__order:hover { background: var(--grad); color: var(--white); border-color: transparent; }
+
+  /* меню-бургер (остров MobileMenu) */
+  .burger { display: none; position: relative; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--gray); z-index: 2; }
+  .burger span { position: absolute; left: 13px; right: 13px; height: 1.5px; background: var(--brown); transition: transform .25s, top .25s; }
+  .burger span:first-child { top: 18px; }
+  .burger span:last-child { top: 26px; }
+  .burger.is-open span:first-child { top: 22px; transform: rotate(45deg); }
+  .burger.is-open span:last-child { top: 22px; transform: rotate(-45deg); }
+  .mmenu { display: none; }
+
+  @media (max-width: 1099px) {
+    :root { --header-h: 64px; }
+    .hdr { padding-top: 8px; }
+    .hdr__bar { padding: 0 9px 0 16px; }
+    .hdr__nav, .hdr__phone, .hdr__order { display: none; }
+    .hdr__logo { left: 18px; top: 4px; width: 74px; height: 56px; transform: none; }
+    .burger { display: block; }
+    .hdr__right .icon-btn { width: 46px; height: 46px; }
+    .mmenu { display: flex; flex-direction: column; justify-content: space-between; position: fixed; inset: 0; z-index: 1; padding: calc(var(--header-h) + 40px) var(--pad) 32px; background: var(--cream-2); opacity: 0; visibility: hidden; transform: translateY(-12px); transition: opacity .25s, transform .25s, visibility 0s .25s; overflow-y: auto; }
+    .mmenu.is-open { opacity: 1; visibility: visible; transform: none; transition: opacity .25s, transform .25s; }
+    .mmenu__nav { display: flex; flex-direction: column; gap: 6px; }
+    .mmenu__nav a { font-size: 36px; line-height: 1.15; color: var(--brown); }
+    .mmenu__bottom { display: flex; flex-direction: column; gap: 10px; margin-top: 32px; }
+    .mmenu__phone { font-size: 26px; color: var(--brown); }
+    .mmenu__hours { font-size: 15px; color: var(--gray); }
+    .mmenu__icons { display: flex; gap: 8px; margin: 6px 0 10px; }
+    html.menu-open { overflow: hidden; }
+    html.menu-open .hdr__bar { background: transparent; }
+  }
+</style>

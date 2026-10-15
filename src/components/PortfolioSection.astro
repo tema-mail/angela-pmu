@@ -1,0 +1,71 @@
+---
+import { getImage } from 'astro:assets';
+import { u } from '../lib/url';
+import { categories } from '../data/site';
+import Portfolio, { type Work } from './Portfolio';
+import lips1 from '../assets/lips1.png';
+import lips2 from '../assets/lips2-overlay.png';
+import lips3 from '../assets/lips3.png';
+import keratin from '../assets/s-keratin.png';
+import botox from '../assets/s-botox.png';
+import brows from '../assets/s-brows.png';
+import lash from '../assets/s-lash.png';
+import lamin from '../assets/s-lamin.png';
+import micro from '../assets/s-micro.png';
+
+// В макете 3 работы «Акварельные губы»; для остальных фильтров – фото из карточек услуг.
+const raw = [
+  { cat: 'Акварельные губы', img: lips1 },
+  { cat: 'Акварельные губы', img: lips2 },
+  { cat: 'Акварельные губы', img: lips3 },
+  { cat: 'Кератиновое выпрямление', img: keratin },
+  { cat: 'Горячий ботокс', img: botox },
+  { cat: 'Напыление бровей', img: brows },
+  { cat: 'Напыление межресничного пространства', img: lash },
+  { cat: 'Ламинирование и окрашивание', img: lamin },
+  { cat: 'Микроблейдинг', img: micro },
+];
+
+const works: Work[] = await Promise.all(
+  raw.map(async (r, i) => {
+    const im = await getImage({ src: r.img, widths: [430, 860], format: 'webp' });
+    return { cat: r.cat, src: im.src, srcset: im.srcSet.attribute, alt: `${r.cat} – работа ${i + 1}` };
+  }),
+);
+---
+<section class="wrap section pf-sec" id="portfolio">
+  <p class="eyebrow">Портфолио</p>
+  <h2 class="h2">Результаты,<br />которые говорят сами за себя</h2>
+  <p class="lead pf-sec__lead">Реальные работы в техниках перманентного макияжа и микроблейдинга. Естественные оттенки, гармоничные формы и индивидуальный подбор под внешность клиента.</p>
+  <Portfolio client:visible works={works} categories={categories} prevIcon={u('/img/nav-prev.svg')} nextIcon={u('/img/nav-next.svg')} />
+</section>
+
+<style is:global>
+  .pf-sec__lead { max-width: 697px; }
+  .pf { position: relative; margin-top: 20px; }
+  .pf__arrows { position: absolute; right: 0; bottom: calc(100% + 25px); display: flex; gap: 0; }
+  .pf__arrow { width: 68px; height: 68px; border-radius: 50%; transition: opacity .2s, transform .2s; }
+  .pf__arrow + .pf__arrow { margin-left: 11px; }
+  .pf__arrow:disabled { opacity: .3; cursor: default; }
+  .pf__arrow:not(:disabled):hover { transform: scale(1.05); }
+  .pf__chips { display: flex; flex-wrap: wrap; gap: 20px 10px; max-width: 980px; }
+  .chip { padding: 14px 16px; border: 1px solid var(--gray); border-radius: 58px; font-size: 18px; line-height: 0.8; color: var(--gray); white-space: nowrap; transition: background .2s, color .2s; }
+  .chip:hover { color: var(--brown); border-color: var(--brown); }
+  .chip.is-active { background: var(--grad); background-image: linear-gradient(-40.2deg, #deb497 24%, #986d53 115%); color: var(--white); border-color: transparent; }
+  .pf__track { display: flex; gap: 19.5px; margin-top: 36px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .pf__track::-webkit-scrollbar { display: none; }
+  .pf__card { flex: 0 0 calc((100% - 39px) / 3); margin: 0; aspect-ratio: 427 / 580; border-radius: var(--radius); overflow: hidden; scroll-snap-align: start; background: var(--cream); }
+  .pf__card img { width: 100%; height: 100%; object-fit: cover; }
+
+  @media (max-width: 899px) {
+    .pf__arrows { display: none; }
+    .pf__chips { max-width: none; flex-wrap: nowrap; gap: 8px; overflow-x: auto; margin-inline: calc(-1 * var(--pad)); padding-inline: var(--pad); scrollbar-width: none; }
+    .pf__chips::-webkit-scrollbar { display: none; }
+    .chip { padding: 12px 14px; font-size: 15px; }
+    .pf__track { margin-top: 20px; gap: 10px; margin-inline: calc(-1 * var(--pad)); padding-inline: var(--pad); scroll-padding-inline: var(--pad); }
+    .pf__card { flex-basis: 78%; }
+  }
+  @media (min-width: 600px) and (max-width: 899px) {
+    .pf__card { flex-basis: 46%; }
+  }
+</style>

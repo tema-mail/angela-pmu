@@ -1,0 +1,65 @@
+---
+import { getImage } from 'astro:assets';
+import Reviews, { type Review } from './Reviews';
+import r1 from '../assets/r1.png';
+import r2 from '../assets/r2.png';
+import r3 from '../assets/r3.png';
+import r4 from '../assets/r4.png';
+import r5 from '../assets/r5.png';
+import r6 from '../assets/r6.png';
+import r7 from '../assets/r7.png';
+import r8 from '../assets/r8.png';
+
+// Колонки и высоты карточек – по макету (ширина 315), pos – кадрирование скриншота.
+const layout = [
+  [{ img: r1, h: 416.23, pos: '50% 10.4%' }, { img: r4, h: 154.86, pos: '50% 0%' }],
+  [{ img: r2, h: 591.74, pos: '50% 50%' }, { img: r5, h: 217.77, pos: '50% 50%' }],
+  [{ img: r3, h: 327.89, pos: '50% 50%' }, { img: r6, h: 542.29, pos: '50% 50%' }],
+  [{ img: r7, h: 278.6, pos: '50% 8.7%' }, { img: r8, h: 292.87, pos: '50% 13.7%' }],
+];
+
+const columns: Review[][] = await Promise.all(
+  layout.map((col) =>
+    Promise.all(
+      col.map(async (c) => {
+        const thumb = await getImage({ src: c.img, widths: [340, 680], format: 'webp' });
+        const full = await getImage({ src: c.img, width: Math.min(c.img.width, 1100), format: 'webp' });
+        return { src: thumb.src, srcset: thumb.srcSet.attribute, full: full.src, ratio: 315 / c.h, pos: c.pos };
+      }),
+    ),
+  ),
+);
+---
+<section class="wrap section" id="reviews">
+  <p class="eyebrow">Отзывы</p>
+  <h2 class="h2">Ваше доверие<br />— моя главная ценность</h2>
+  <p class="lead rv-lead">Посмотрите, что говорят клиенты о процедурах, комфорте и полученных результатах.</p>
+  <Reviews client:visible columns={columns} />
+</section>
+
+<style is:global>
+  .rv-lead { max-width: 411px; }
+  .rv { margin-top: clamp(28px, 3vw, 44px); display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); align-items: start; }
+  .rv__col { display: flex; flex-direction: column; gap: var(--gap); }
+  .rv__card { display: block; width: 100%; aspect-ratio: var(--ratio); border: 1px solid var(--gray); border-radius: var(--radius); overflow: hidden; background: var(--white); cursor: zoom-in; transition: transform .25s, box-shadow .25s; }
+  .rv__card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(152, 109, 83, .15); }
+  .rv__card img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos); }
+
+  .rv__dlg { max-width: min(560px, 94vw); max-height: 92vh; padding: 0; border: 0; border-radius: var(--radius); background: var(--white); overflow: auto; }
+  .rv__dlg::backdrop { background: rgba(40, 28, 20, .7); }
+  .rv__dlg img { width: 100%; height: auto; }
+  .rv__close { position: fixed; top: max(12px, 4vh); right: max(12px, 3vw); width: 44px; height: 44px; border-radius: 50%; background: var(--white); color: var(--brown); font-size: 28px; line-height: 1; box-shadow: 0 2px 10px rgba(0,0,0,.15); }
+
+  @media (max-width: 1099px) and (min-width: 900px) {
+    .rv, .rv__col { gap: 12px; }
+  }
+  @media (max-width: 899px) {
+    .rv { display: flex; align-items: flex-start; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(-1 * var(--pad)); padding-inline: var(--pad); scroll-padding-inline: var(--pad); }
+    .rv::-webkit-scrollbar { display: none; }
+    .rv__col { display: contents; }
+    .rv__card { flex: 0 0 78%; scroll-snap-align: start; }
+  }
+  @media (min-width: 600px) and (max-width: 899px) {
+    .rv__card { flex-basis: 46%; }
+  }
+</style>

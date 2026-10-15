@@ -1,0 +1,92 @@
+---
+import { Image } from 'astro:assets';
+import { u } from '../lib/url';
+import { contacts } from '../data/site';
+import Cta from './Cta.astro';
+import map from '../assets/map.png';
+import logo from '../assets/logo-big.png';
+---
+<section class="wrap section ct" id="contacts">
+  <a class="ct__map" href={contacts.map} target="_blank" rel="noopener" aria-label="Открыть адрес в Яндекс Картах">
+    <Image src={map} alt="Карта: Севастополь, ул. Адмирала Фадеева, 48" widths={[480, 760, 1342]} sizes="(max-width: 899px) 100vw, 650px" />
+  </a>
+  <div class="ct__info">
+    <p class="eyebrow">Контакты</p>
+    <h2 class="h2">Запишитесь<br />на консультацию</h2>
+    <p class="lead ct__lead">Расскажите, какой результат хотите получить. Помогу подобрать подходящую технику, оттенок и форму с учётом особенностей вашей внешности.</p>
+    <p class="ct__label ct__label--addr">Адрес</p>
+    <a class="ct__val" href={contacts.map} target="_blank" rel="noopener">{contacts.address}</a>
+    <div class="ct__row">
+      <div>
+        <p class="ct__label">Телефон</p>
+        <a class="ct__val ct__phone" href={contacts.phoneHref}>{contacts.phone}</a>
+      </div>
+      <div>
+        <p class="ct__label">Соц. сети</p>
+        <div class="ct__icons">
+          <a class="icon-btn" href={contacts.telegram} target="_blank" rel="noopener" aria-label="Telegram"><img src={u('/img/ic-tg-foot.svg')} alt="" width="17.6" height="28.6" /></a>
+          <a class="icon-btn" href={contacts.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp"><img src={u('/img/ic-wa-foot.svg')} alt="" width="17.2" height="19.1" /></a>
+        </div>
+      </div>
+    </div>
+    <Cta class="ct__cta" />
+  </div>
+</section>
+
+<footer class="wrap ft">
+  <Image class="ft__logo" src={logo} alt="Angela Bogatyryova Beauty Salon" widths={[240, 480]} sizes="233px" />
+  <div class="ft__req">УНП:<br />ОГРНИП:</div>
+  <div class="ft__docs">
+    <p class="ct__label">Юр. документы</p>
+    <span>Политика конфиденциальности</span>
+    <span>Пользовательское соглашение</span>
+  </div>
+  <a class="ft__made" href="https://deford.ru/" target="_blank" rel="noopener">💙 Сделано с любовью в Дефорд</a>
+</footer>
+
+<style>
+  .ct { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); align-items: stretch; }
+  .ct__map { display: block; min-height: 564px; border-radius: var(--radius); overflow: hidden; background: #2b3a45; }
+  .ct__map img { width: 100%; height: 100%; object-fit: cover; }
+  .ct__info { display: flex; flex-direction: column; align-items: flex-start; }
+  .ct__lead { max-width: 608px; }
+  .ct__label { font-size: var(--fs-eyebrow); color: var(--brown); }
+  .ct__label--addr { margin-top: 22px; }
+  .ct__val { margin-top: 26px; font-size: clamp(22px, 1rem + 1vw, 30px); line-height: 0.8; color: var(--brown); }
+  .ct__val:hover { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .ct__row { display: grid; grid-template-columns: 306px auto; margin-top: 35px; }
+  .ct__row > div { display: flex; flex-direction: column; align-items: flex-start; }
+  .ct__phone { margin-top: 31px; }
+  .ct__icons { display: flex; gap: 6px; margin-top: 16px; }
+  .ct__icons .icon-btn { width: 54px; height: 54px; }
+  .ct :global(.ct__cta) { margin-top: auto; }
+
+  .ft { display: grid; grid-template-columns: 335px 335px 1fr auto; align-items: end; margin-top: 64px; padding-bottom: 37px; color: var(--gray); font-size: 18px; }
+  .ft__logo { width: 233px; height: 218px; object-fit: fill; }
+  .ft__req { align-self: end; padding-bottom: 48px; line-height: 1.22; }
+  .ft__docs { display: flex; flex-direction: column; gap: 11px; padding-bottom: 46px; }
+  .ft__docs .ct__label { margin-bottom: 15px; }
+  .ft__made { padding-bottom: 46px; }
+  .ft__made:hover { color: var(--brown); }
+
+  @media (max-width: 1239px) {
+    .ft { grid-template-columns: 1fr 1fr; gap: 28px var(--gap); }
+    .ft__req, .ft__docs, .ft__made { padding-bottom: 0; }
+  }
+  @media (max-width: 899px) {
+    .ct { grid-template-columns: 1fr; gap: 28px; }
+    .ct__map { order: 2; min-height: 0; aspect-ratio: 650 / 564; }
+    .ct__label--addr { margin-top: 24px; }
+    .ct__val { margin-top: 14px; line-height: 1.1; }
+    .ct__row { grid-template-columns: auto auto; justify-content: start; column-gap: 40px; margin-top: 24px; }
+    .ct__phone { margin-top: 14px; }
+    .ct__icons { margin-top: 8px; }
+    .ct :global(.ct__cta) { margin-top: 28px; }
+    .ft { grid-template-columns: 1fr; gap: 24px; margin-top: 48px; padding-bottom: 28px; font-size: 16px; }
+    .ft__logo { width: 160px; height: 150px; }
+    .ft__docs .ct__label { margin-bottom: 4px; }
+  }
+  @media (max-width: 420px) {
+    .ct__row { grid-template-columns: 1fr; row-gap: 20px; }
+  }
+</style>

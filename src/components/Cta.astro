@@ -1,0 +1,10 @@
+---
+import { u } from '../lib/url';
+import { bookHref } from '../data/site';
+interface Props { class?: string; label?: string }
+const { class: cls = '', label = 'Записаться на консультацию' } = Astro.props;
+---
+<a class:list={['cta', cls]} href={bookHref} target="_blank" rel="noopener">
+  {label}
+  <span class="cta__dot" aria-hidden="true"><img src={u('/img/arrow-right.svg')} alt="" width="33" height="32" /></span>
+</a>
