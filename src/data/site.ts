@@ -7,14 +7,15 @@ export const contacts = {
   phone: '+7 (916) 452-86-89',
   phoneHref: 'tel:+79164528689',
   address: 'Севастополь, ул. Фадеева, 48',
-  // Ссылки мессенджеров собраны из номера – не подтверждены клиентом.
-  whatsapp: 'https://wa.me/79164528689',
+  // Ссылка Telegram собрана из номера – не подтверждена клиентом.
   telegram: 'https://t.me/+79164528689',
   map: 'https://yandex.ru/maps/?text=' + encodeURIComponent('Севастополь, улица Адмирала Фадеева, 48'),
 };
 
-export const bookHref =
-  contacts.whatsapp + '?text=' + encodeURIComponent('Здравствуйте! Хочу записаться на консультацию.');
+// Кнопки записи (data-book) открывают окно BookDialog: t.me не принимает текст ссылкой, поэтому текст копируем в буфер.
+// Сама ссылка – на случай, если скрипт не загрузился.
+export const bookHref = contacts.telegram;
+export const bookText = 'Здравствуйте! Хочу записаться на консультацию.';
 
 export const nav = [
   { href: '#services', label: 'Услуги' },

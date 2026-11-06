@@ -7,9 +7,7 @@ interface Props {
   hours: string;
   bookHref: string;
   telegram: string;
-  whatsapp: string;
   tgIcon: string;
-  waIcon: string;
   arrowIcon: string;
 }
 
@@ -49,9 +47,8 @@ export default function MobileMenu(p: Props) {
           <div class="mmenu__hours">{p.hours}</div>
           <div class="mmenu__icons">
             <a class="icon-btn icon-tg" href={p.telegram} target="_blank" rel="noopener" aria-label="Telegram"><img src={p.tgIcon} alt="" width="15" height="24" /></a>
-            <a class="icon-btn" href={p.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp"><img src={p.waIcon} alt="" width="15" height="16" /></a>
           </div>
-          <a class="cta mmenu__cta" href={p.bookHref} target="_blank" rel="noopener" onClick={close}>
+          <a class="cta mmenu__cta" href={p.bookHref} target="_blank" rel="noopener" data-book onClick={close}>
             Записаться на консультацию
             <span class="cta__dot" aria-hidden="true"><img src={p.arrowIcon} alt="" width="33" height="32" /></span>
           </a>

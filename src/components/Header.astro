@@ -20,8 +20,7 @@ import logo from '../assets/logo-small.png';
           <small>{contacts.hours}</small>
         </a>
         <a class="icon-btn icon-tg" href={contacts.telegram} target="_blank" rel="noopener" aria-label="Telegram"><img src={u('/img/ic-tg-head.svg')} alt="" width="15" height="24" /></a>
-        <a class="icon-btn" href={contacts.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp"><img src={u('/img/ic-wa-head.svg')} alt="" width="15" height="16" /></a>
-        <a class="hdr__order" href={bookHref} target="_blank" rel="noopener">Заказать</a>
+        <a class="hdr__order" href={bookHref} target="_blank" rel="noopener" data-book>Заказать</a>
         <MobileMenu
           client:media="(max-width: 1099px)"
           nav={nav}
@@ -30,9 +29,7 @@ import logo from '../assets/logo-small.png';
           hours={contacts.hours}
           bookHref={bookHref}
           telegram={contacts.telegram}
-          whatsapp={contacts.whatsapp}
           tgIcon={u('/img/ic-tg-head.svg')}
-          waIcon={u('/img/ic-wa-head.svg')}
           arrowIcon={u('/img/arrow-right.svg')}
         />
       </div>

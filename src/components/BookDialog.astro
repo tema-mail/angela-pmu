@@ -1,0 +1,59 @@
+---
+// Запись на консультацию: формы и данных клиента нет, только готовый текст для Telegram и телефон.
+// t.me не принимает текст ссылкой, поэтому кнопка копирует его в буфер и открывает Telegram.
+import { contacts, bookText } from '../data/site';
+---
+<dialog class="book" id="book-dialog" aria-labelledby="book-title">
+  <button type="button" class="book__close" data-book-close aria-label="Закрыть">×</button>
+  <h2 class="book__title" id="book-title">Запись на консультацию</h2>
+  <p class="book__text">Отправьте сообщение в Telegram – текст уже готов. Или позвоните.</p>
+  <textarea class="book__msg" rows="3" readonly aria-label="Готовый текст сообщения">{bookText}</textarea>
+  <a class="book__btn book__btn--main" data-book-copy href={contacts.telegram} target="_blank" rel="noopener">Скопировать и открыть Telegram</a>
+  <p class="book__note" data-book-note aria-live="polite">Telegram откроется без текста: вставьте его в чат и отправьте.</p>
+  <a class="book__btn" href={contacts.phoneHref}>Позвонить: {contacts.phone}</a>
+</dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('#book-dialog')!;
+  const box = dialog.querySelector<HTMLTextAreaElement>('textarea')!;
+  const note = dialog.querySelector<HTMLElement>('[data-book-note]')!;
+  const noteBefore = note.textContent ?? '';
+
+  // Кнопки записи есть и в шапке, и в меню-острове: ловим клик на документе.
+  document.addEventListener('click', (e) => {
+    const trigger = (e.target as HTMLElement).closest('[data-book]');
+    if (!trigger) return;
+    e.preventDefault();
+    note.textContent = noteBefore;
+    dialog.showModal();
+  });
+  dialog.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    if (t === dialog || t.closest('[data-book-close]')) dialog.close();
+  });
+
+  // Ссылка открывается сама (target=_blank), блокировщик окон её не трогает; здесь только копирование.
+  dialog.querySelector('[data-book-copy]')!.addEventListener('click', () => {
+    box.focus();
+    box.setSelectionRange(0, box.value.length);
+    let copied = false;
+    try { copied = document.execCommand('copy'); } catch { /* старый способ недоступен */ }
+    const said = (ok: boolean) => {
+      note.textContent = ok ? 'Текст скопирован. Вставьте его в чат Telegram и отправьте.' : 'Не удалось скопировать: выделите текст выше и скопируйте вручную.';
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(box.value).then(() => said(true), () => said(copied));
+    else said(copied);
+  });
+</script>
+
+<style is:global>
+  .book { width: min(460px, calc(100vw - 32px)); padding: 32px 24px 24px; border: 0; border-radius: var(--radius); background: var(--cream-2); color: var(--brown); }
+  .book::backdrop { background: rgba(60, 40, 28, 0.45); }
+  .book__close { position: absolute; top: 10px; right: 12px; width: 40px; height: 40px; font-size: 26px; line-height: 1; color: var(--gray-2); }
+  .book__title { font-size: 26px; line-height: 1.1; padding-right: 32px; }
+  .book__text { margin-top: 10px; font-size: var(--fs-lead); line-height: 1.25; color: var(--gray-2); }
+  .book__msg { display: block; width: 100%; margin-top: 16px; padding: 12px 14px; border: 1px solid var(--gray); border-radius: 12px; background: var(--white); color: var(--brown); font: inherit; font-size: 16px; line-height: 1.3; resize: vertical; }
+  .book__btn { display: flex; align-items: center; justify-content: center; min-height: 54px; margin-top: 14px; padding: 8px 18px; border: 1px solid var(--brown); border-radius: 50px; font-weight: 600; font-size: 16px; line-height: 1.15; text-align: center; }
+  .book__btn--main { border: 0; background: var(--grad); color: var(--white); }
+  .book__note { margin-top: 10px; font-size: 14px; line-height: 1.25; color: var(--gray-2); }
+</style>
